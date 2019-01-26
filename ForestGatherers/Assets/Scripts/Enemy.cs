@@ -13,8 +13,10 @@ public enum AttackMode {
     Attacking,
     LostTarget
 }
-public class Enemy : MonoBehaviour
-{
+interface IAnimEventReciever {
+    void OnRecieve();
+}
+public class Enemy : MonoBehaviour, IAnimEventReciever {
     public Rigidbody rig;
 
     Vector3 dir;
@@ -28,39 +30,67 @@ public class Enemy : MonoBehaviour
 
     public float groundAttackDistance=5;
 
+    public Animator anim;
+    public bool readyToAtk;
+
+
     // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        agent.destination = goal.position;
     }
 
     // Update is called once per frame
     void Update()
     {
         HandleDifferentEnemyTypes();
-        
+        switch (aiState) {
+            case AttackMode.Waiting:
+                Vector3 selfPos = new Vector3(transform.position.x, transform.position.y, GameManager.m.player.position.z);
+                if (Vector3.Distance(selfPos, GameManager.m.player.position)
+                    < groundAttackDistance) {
+                    aiState = AttackMode.Attacking;
+                    if (anim)
+                        anim.SetBool("awakened", true);
+                }
+                break;
+            case AttackMode.Attacking:
+                if (Vector2.Distance(GameManager.m.player.position, transform.position) < 5
+                    && readyToAtk) {
+                    anim.SetTrigger("attack");
+                    readyToAtk = false;
+                } else {
+                    agent.destination = goal.position;
+                    anim.SetBool("move", true);
+                }
+                if (Vector2.Distance(GameManager.m.player.position, transform.position) > 30) {
+                    aiState = AttackMode.LostTarget;
+                }
+                break;
+            case AttackMode.LostTarget:
+                aiState = AttackMode.Waiting;
+                break;
+            default:
+                break;
+        }
     }
 
     private void HandleDifferentEnemyTypes() {
         switch (enemyType) {
             case EnemyType.Ground:
-                agent.destination = GameManager.m.player.position;
-                Vector3 selfPos = new Vector3(transform.position.x, transform.position.y, GameManager.m.player.position.z);
-                if (Vector3.Distance(selfPos, GameManager.m.player.position)
-                    < groundAttackDistance) {
-                    aiState = AttackMode.Attacking;
-                }
+                
                 break;
             case EnemyType.Tree:
-                agent.destination = GameManager.m.player.position;
                 break;
             case EnemyType.Other:
-                agent.destination = goal.position;
                 break;
             default:
                 break;
         }
 
+    }
+
+    public void OnRecieve() {
+        readyToAtk = true;
     }
 }

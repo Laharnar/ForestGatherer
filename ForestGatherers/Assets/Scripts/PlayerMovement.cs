@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
 
     public float stanmina = 10;
     private bool stanminaAvaliableForReload;
+
+    public int hp = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -58,6 +61,12 @@ public class PlayerMovement : MonoBehaviour
         } else {
             rig.MovePosition(rig.position + input * runSpeed * Time.deltaTime);
         }
+    }
+
+    internal void GetDmg(int v) {
+        hp -= v;
+        if (hp <= 0)
+            Destroy(gameObject);
     }
 }
 
