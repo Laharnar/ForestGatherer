@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
     public Transform player;
     public Transform trapPref;
     public Transform bulletPref;
+    public Transform cam;
 
     private void Start() {
         m = this;

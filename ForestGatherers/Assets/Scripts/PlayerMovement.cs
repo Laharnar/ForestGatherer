@@ -21,6 +21,9 @@ public class PlayerMovement : MonoBehaviour
     public int trapCount = 5;
     float trapCd = 0;
 
+    public float horizontalSensitivity = 4f;
+    public float verticalSensitivity = 4f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,6 +52,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X"), 0) * Time.deltaTime * horizontalSensitivity);
+        GameManager.m.cam.GetComponent<TargetCamera>().offset += new Vector3(0, Input.GetAxis("Mouse Y"), 0) * Time.deltaTime * verticalSensitivity;
+//        GameManager.m.cam.transform.Translate();
+
         input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         running = false;
         if (Input.GetKey(KeyCode.Space) && stanmina > 0) {
@@ -65,9 +72,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate() {
         if (running == false) {
-            rig.MovePosition(rig.position + input * speed * Time.deltaTime);
+            rig.MovePosition(rig.position +transform.TransformDirection( input) * speed * Time.deltaTime);
         } else {
-            rig.MovePosition(rig.position + input * runSpeed * Time.deltaTime);
+            rig.MovePosition(rig.position + transform.TransformDirection(input) * runSpeed * Time.deltaTime);
         }
     }
 
