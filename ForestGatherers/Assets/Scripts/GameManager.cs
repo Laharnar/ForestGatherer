@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-
 public class GameManager : MonoBehaviour {
 
     public static GameManager m;
@@ -8,6 +7,7 @@ public class GameManager : MonoBehaviour {
     public Transform uiObj;
     public Transform player;
     public Transform trapPref;
+    public Transform bulletPref;
 
     private void Start() {
         m = this;

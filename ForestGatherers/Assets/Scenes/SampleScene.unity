@@ -416,7 +416,7 @@ GameObject:
   - component: {fileID: 464856165}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -703,6 +703,8 @@ MonoBehaviour:
   uiObj: {fileID: 1851254484}
   player: {fileID: 464856159}
   trapPref: {fileID: 8036270625433588272, guid: bd3fd7766cf2977469a50abbc131ed42,
+    type: 3}
+  bulletPref: {fileID: 877109740535982926, guid: 6510080c8907c994cb20d81ffa81df02,
     type: 3}
 --- !u!4 &791980085
 Transform:
@@ -1460,6 +1462,11 @@ PrefabInstance:
       propertyPath: goal
       value: 
       objectReference: {fileID: 776757074}
+    - target: {fileID: 1784452812382286699, guid: db64584cfa61fb241aa617b4f4af4c0a,
+        type: 3}
+      propertyPath: enemyType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db64584cfa61fb241aa617b4f4af4c0a, type: 3}
 --- !u!1 &4277224725650906713 stripped
@@ -1504,7 +1511,7 @@ PrefabInstance:
     - target: {fileID: 8036270625433588272, guid: bd3fd7766cf2977469a50abbc131ed42,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.63
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8036270625433588272, guid: bd3fd7766cf2977469a50abbc131ed42,
         type: 3}
@@ -1550,11 +1557,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3688437095554405396, guid: bd3fd7766cf2977469a50abbc131ed42,
-        type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd3fd7766cf2977469a50abbc131ed42, type: 3}

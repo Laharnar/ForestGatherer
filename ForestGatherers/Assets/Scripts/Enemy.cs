@@ -17,6 +17,7 @@ interface IAnimEventReciever {
     void OnRecieve();
 }
 public class Enemy : MonoBehaviour, IAnimEventReciever {
+
     public Rigidbody rig;
 
     Vector3 dir;
@@ -58,8 +59,7 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
             case AttackMode.Attacking:
                 if (GameManager.m.player&& Vector2.Distance(GameManager.m.player.position, transform.position) < 5
                     && readyToAtk) {
-                    anim.SetTrigger("attack");
-                    readyToAtk = false;
+                    Attack();
                 } else {
                     if (goal)
                     agent.destination = goal.position;
@@ -75,6 +75,30 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
             default:
                 break;
         }
+    }
+
+    private void Attack() {
+        switch (enemyType) {
+            case EnemyType.Ground:
+                anim.SetTrigger("attack");
+                readyToAtk = false;
+                break;
+            case EnemyType.Tree:
+                Transform t = Instantiate(GameManager.m.bulletPref, transform.position, new Quaternion());
+                t.forward = (GameManager.m.player.position - transform.position);
+                readyToAtk = false;
+                StartCoroutine(Reload(2));
+                break;
+            case EnemyType.Other:
+                break;
+            default:
+                break;
+        }
+    }
+
+    private IEnumerator Reload(float cd) {
+        yield return new WaitForSeconds(cd);
+        readyToAtk = true;
     }
 
     private void HandleDifferentEnemyTypes() {
