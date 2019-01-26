@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour {
     public static GameManager m;
 
     public Transform uiObj;
+    public Transform player;
 
     private void Start() {
         m = this;
