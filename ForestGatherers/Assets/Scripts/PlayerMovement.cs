@@ -44,7 +44,9 @@ public class PlayerMovement : MonoBehaviour
     void Update()
     {
         input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        if (Input.GetKey(KeyCode.Space)) {
+        running = false;
+        if (Input.GetKey(KeyCode.Space) && stanmina > 0) {
+            running = true;
             stanmina -= Time.deltaTime;
             stanminaAvaliableForReload = false;
         }
