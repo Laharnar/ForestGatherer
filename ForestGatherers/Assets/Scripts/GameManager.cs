@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
 
     public Transform uiObj;
     public Transform player;
+    public Transform trapPref;
 
     private void Start() {
         m = this;

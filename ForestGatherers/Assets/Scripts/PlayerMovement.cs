@@ -18,6 +18,9 @@ public class PlayerMovement : MonoBehaviour
 
     public int hp = 3;
 
+    public int trapCount = 5;
+    float trapCd = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -52,6 +55,11 @@ public class PlayerMovement : MonoBehaviour
             running = true;
             stanmina -= Time.deltaTime;
             stanminaAvaliableForReload = false;
+        }
+        if (Input.GetKey(KeyCode.N) && trapCount > 0 && Time.time > trapCd) {
+            trapCd = Time.time+0.33f;
+            trapCount--;
+            Instantiate(GameManager.m.trapPref, transform.position, new Quaternion());
         }
     }
 

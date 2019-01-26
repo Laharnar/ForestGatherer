@@ -43,6 +43,7 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
     // Update is called once per frame
     void Update()
     {
+        agent.speed = speed;
         HandleDifferentEnemyTypes();
         switch (aiState) {
             case AttackMode.Waiting:
@@ -55,11 +56,12 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
                 }
                 break;
             case AttackMode.Attacking:
-                if (Vector2.Distance(GameManager.m.player.position, transform.position) < 5
+                if (GameManager.m.player&& Vector2.Distance(GameManager.m.player.position, transform.position) < 5
                     && readyToAtk) {
                     anim.SetTrigger("attack");
                     readyToAtk = false;
                 } else {
+                    if (goal)
                     agent.destination = goal.position;
                     anim.SetBool("move", true);
                 }
@@ -92,5 +94,16 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
 
     public void OnRecieve() {
         readyToAtk = true;
+    }
+
+    internal void StopEffect() {
+        StartCoroutine(Stop(3));
+    }
+
+    private IEnumerator Stop(float v) {
+        float s = speed;
+        speed = 0;
+        yield return new WaitForSeconds(v);
+        speed = s;
     }
 }
