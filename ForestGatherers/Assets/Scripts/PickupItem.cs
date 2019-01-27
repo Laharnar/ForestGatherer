@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PickupItem : MonoBehaviour
 {
+    public static int pickupCount = 0;
+
     // 0: pickup. 1: 
     public int mode;
 
@@ -11,6 +13,11 @@ public class PickupItem : MonoBehaviour
     void Start()
     {
         
+        for (int i = 0; i < 3; i++) {
+            transform.GetChild(0).GetChild(i).gameObject.SetActive(false);
+        }
+        transform.GetChild(0).GetChild(Random.Range(0, 3)).gameObject.SetActive(true);
+        pickupCount++;
     }
 
     // Update is called once per frame
