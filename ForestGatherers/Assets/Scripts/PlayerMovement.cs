@@ -26,9 +26,12 @@ public class PlayerMovement : MonoBehaviour
 
     public Animator anim;
 
+    public AudioController audioFx;
+
     // Start is called before the first frame update
     void Start()
     {
+        audioFx.Init();
         StartCoroutine(StanminaReLoader());
     }
 
@@ -56,16 +59,22 @@ public class PlayerMovement : MonoBehaviour
     {
         transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X"), 0) * Time.deltaTime * horizontalSensitivity);
         GameManager.m.cam.GetComponent<TargetCamera>().offset += new Vector3(0, Input.GetAxis("Mouse Y"), 0) * Time.deltaTime * verticalSensitivity;
-//        GameManager.m.cam.transform.Translate();
+        //        GameManager.m.cam.transform.Translate();
+        if(audioFx.monsterSounds)
+        audioFx.Play(1, true);
 
         input = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         running = false;
-        if (Input.GetKey(KeyCode.Space) && stanmina > 0) {
+        if (Input.GetKey(KeyCode.LeftShift) && stanmina > 0) {
+            
+
             running = true;
             stanmina -= Time.deltaTime;
             stanminaAvaliableForReload = false;
         }
-        if (Input.GetKey(KeyCode.N) && trapCount > 0 && Time.time > trapCd) {
+        if (Input.GetKey(KeyCode.Space) && trapCount > 0 && Time.time > trapCd) {
+            audioFx.PlayOne(2);
+
             trapCd = Time.time+0.33f;
             trapCount--;
             Instantiate(GameManager.m.trapPref, transform.position, new Quaternion());
@@ -88,6 +97,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     internal void GetDmg(int v) {
+        audioFx.PlayOne(0);
         hp -= v;
         if (hp <= 0)
             Destroy(gameObject);

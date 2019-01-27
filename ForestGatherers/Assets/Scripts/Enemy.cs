@@ -15,6 +15,26 @@ public enum AttackMode {
 interface IAnimEventReciever {
     void OnRecieve();
 }
+[System.Serializable]
+public class AudioController {
+
+    public AudioSource monsterSounds;
+    public AudioClip[] soundClips;
+
+    public void Init() {
+        if(monsterSounds!= null)monsterSounds.clip = soundClips[UnityEngine.Random.Range(0, soundClips.Length)];
+    }
+
+    internal void PlayOne(int v1) {
+         if(monsterSounds!= null)monsterSounds.PlayOneShot(soundClips[v1]);
+    }
+
+    internal void Play(int v1, bool v2) {
+        if (soundClips[v1] != null) {
+            if(monsterSounds!= null)monsterSounds.PlayOneShot(soundClips[v1]);
+        }
+    }
+}
 public class Enemy : MonoBehaviour, IAnimEventReciever {
 
     public Rigidbody rig;
@@ -33,6 +53,7 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
     public Animator anim;
     public bool readyToAtk;
 
+    public AudioController audioFx;
 
     // Start is called before the first frame update
     void Start()
@@ -44,6 +65,8 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
         transform.GetChild((int)enemyType).gameObject.SetActive(true);
 
         agent = GetComponent<NavMeshAgent>();
+
+        audioFx.Init();
     }
 
     // Update is called once per frame
@@ -84,12 +107,15 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
     }
 
     private void Attack() {
+        audioFx.monsterSounds.Play();
         switch (enemyType) {
             case EnemyType.Ground:
+
                 anim.SetTrigger("attack");
                 readyToAtk = false;
                 break;
             case EnemyType.Tree:
+
                 Transform t = Instantiate(GameManager.m.bulletPref, transform.position, new Quaternion());
                 t.forward = (GameManager.m.player.position - transform.position);
                 readyToAtk = false;

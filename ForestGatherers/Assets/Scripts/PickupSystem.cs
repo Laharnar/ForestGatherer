@@ -10,13 +10,17 @@ public class PickupSystem : MonoBehaviour
 
     public Transform housePoint;
     public int maxItemsOnMap = 3;
+    public AudioController audioFx;
 
     private void EndGame() {
+        audioFx.Init();
         Debug.Log("End game");
         GameManager.m.ShowUI("Menu1_END");
     }
 
     private void OnTriggerEnter(Collider collider) {
+        audioFx.PlayOne(0);
+
         PickupItem item = collider.GetComponent<PickupItem>();
         if (item != null) {
             if (item.mode == 0 && item.isActualyPickup) {
