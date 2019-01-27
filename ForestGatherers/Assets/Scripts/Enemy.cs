@@ -5,8 +5,7 @@ using UnityEngine;
 using UnityEngine.AI;
 public enum EnemyType {
     Ground,
-    Tree,
-    Other
+    Tree
 }
 public enum AttackMode {
     Waiting,
@@ -38,6 +37,12 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
     // Start is called before the first frame update
     void Start()
     {
+        // specific: enable enemy type child
+        for (int i = 0; i < transform.childCount; i++) {
+            transform.GetChild(i).gameObject.SetActive(false);
+        }
+        transform.GetChild((int)enemyType).gameObject.SetActive(true);
+
         agent = GetComponent<NavMeshAgent>();
     }
 
@@ -61,9 +66,10 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
                     && readyToAtk) {
                     Attack();
                 } else {
-                    if (goal)
-                    agent.destination = goal.position;
-                    anim.SetBool("move", true);
+                    if (goal!=null && Vector3.Distance(goal.position, agent.destination) > 3) {
+                        agent.destination = goal.position;
+                        anim.SetBool("move", true);
+                    }
                 }
                 if (Vector2.Distance(GameManager.m.player.position, transform.position) > 30) {
                     aiState = AttackMode.LostTarget;
@@ -89,8 +95,6 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
                 readyToAtk = false;
                 StartCoroutine(Reload(2));
                 break;
-            case EnemyType.Other:
-                break;
             default:
                 break;
         }
@@ -107,8 +111,6 @@ public class Enemy : MonoBehaviour, IAnimEventReciever {
                 
                 break;
             case EnemyType.Tree:
-                break;
-            case EnemyType.Other:
                 break;
             default:
                 break;

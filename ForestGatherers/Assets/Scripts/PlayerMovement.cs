@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     public float horizontalSensitivity = 4f;
     public float verticalSensitivity = 4f;
 
+    public Animator anim;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -71,9 +73,16 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void FixedUpdate() {
+        if (input == Vector3.zero) {
+            if (anim) anim.SetBool("walk", false);
+            if (anim) anim.SetBool("run", false);
+
+        }
         if (running == false) {
-            rig.MovePosition(rig.position +transform.TransformDirection( input) * speed * Time.deltaTime);
+            if(anim) anim.SetBool("walk", true);
+            rig.MovePosition(rig.position + transform.TransformDirection(input) * speed * Time.deltaTime);
         } else {
+            if(anim) anim.SetBool("run", true);
             rig.MovePosition(rig.position + transform.TransformDirection(input) * runSpeed * Time.deltaTime);
         }
     }
