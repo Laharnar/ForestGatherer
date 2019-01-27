@@ -99,8 +99,10 @@ public class PlayerMovement : MonoBehaviour
     internal void GetDmg(int v) {
         audioFx.PlayOne(0);
         hp -= v;
-        if (hp <= 0)
+        if (hp <= 0) {
+            GameManager.OpenLoseScene();
             Destroy(gameObject);
+        }
     }
 }
 

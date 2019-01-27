@@ -14,8 +14,9 @@ public class PickupSystem : MonoBehaviour
 
     private void EndGame() {
         audioFx.Init();
+        GameManager.OpenWinScene();
         Debug.Log("End game");
-        GameManager.m.ShowUI("Menu1_END");
+        //GameManager.m.ShowUI("Menu1_END");
     }
 
     private void OnTriggerEnter(Collider collider) {

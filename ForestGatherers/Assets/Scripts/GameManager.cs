@@ -24,10 +24,17 @@ public class GameManager : MonoBehaviour {
     }
 
     public void OpenGameplayScene() {
-        SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MapEditingScene UseTHIS");
     }
 
     public void OpenMainMenuScene() {
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public static void OpenWinScene() {
+        SceneManager.LoadScene("ShowWin");
+    }
+    public static void OpenLoseScene() {
+        SceneManager.LoadScene("ShowLose");
     }
 }
