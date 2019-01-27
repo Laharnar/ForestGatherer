@@ -6,6 +6,9 @@ public class PickupItem : MonoBehaviour
 {
     public static int pickupCount = 0;
 
+    // house is just a trigger,, not a pickup
+    public bool isActualyPickup = true;
+
     // 0: pickup. 1: 
     public int mode;
 

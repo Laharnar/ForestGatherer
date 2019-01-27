@@ -9,21 +9,7 @@ public class PickupSystem : MonoBehaviour
     public List<PickupItem> points = new List<PickupItem>();
 
     public Transform housePoint;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (points.Count > 0 && points[0].transform == housePoint) {
-            
-            EndGame();
-        }
-    }
+    public int maxItemsOnMap = 3;
 
     private void EndGame() {
         Debug.Log("End game");
@@ -33,11 +19,12 @@ public class PickupSystem : MonoBehaviour
     private void OnTriggerEnter(Collider collider) {
         PickupItem item = collider.GetComponent<PickupItem>();
         if (item != null) {
-            item.gameObject.SetActive(false);
-            if (item.mode == 0)
+            if (item.mode == 0 && item.isActualyPickup) {
                 collectedItems.Add(item);
-            else 
-                points.Add(item);
+                item.gameObject.SetActive(false);
+            }
+            else if (collectedItems.Count == maxItemsOnMap) // assume it's a house
+                EndGame();
         }
     }
 }
